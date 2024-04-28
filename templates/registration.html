@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration</title>
+    <style>
+        /* Загальні стилі */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #2980b9, #6dd5fa); /* Задній фон */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="button"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            display: block;
+            margin-top: 20px;
+            width: 100%;
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        /* Футер */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Registration</h2>
+        <form id="registrationForm">
+            <label for="username">Username:</label><br>
+            <input type="text" id="username" name="username"><br><br>
+
+            <label for="email">Email:</label><br>
+            <input type="email" id="email" name="email"><br><br>
+
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password"><br><br>
+
+            <input type="button" value="Register" onclick="register()">
+        </form>
+
+        <div id="result"></div>
+
+        <button onclick="goBack()">Back</button>
+    </div>
+
+    <!-- Футер -->
+    <footer>
+        &copy; 2024 Фото конвертер. Усі права захищені
+    </footer>
+
+    <script>
+        function register() {
+            var formData = new FormData(document.getElementById("registrationForm"));
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/register", true);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    document.getElementById("result").innerHTML = response.message;
+                } else {
+                    document.getElementById("result").innerHTML = 'Email already exists';
+                }
+            };
+            xhr.send(formData);
+        }
+
+        function goBack() {
+            window.location.href = "/";
+        }
+
+        // Show error message on page load
+        window.onload = function() {
+            var errorMessage = "{{ message }}";
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+        }
+    </script>
+</body>
+</html>
